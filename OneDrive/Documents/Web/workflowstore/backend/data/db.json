@@ -1,0 +1,160 @@
+{
+  "users": [],
+  "orders": [],
+  "workflows": [
+    {
+      "id": "wf-biz-fb",
+      "title": "Facebook Auto-Poster",
+      "description": "Automatically schedule and publish posts, images, and videos across multiple Facebook Pages and Groups for your marketing campaigns.",
+      "price": 49,
+      "category": "Business",
+      "features": [
+        "Unlimited bulk scheduling and posting",
+        "Automatic content spinning to avoid spam flags",
+        "Support for multi-image and video attachments",
+        "Automated weekly engagement reports"
+      ],
+      "image": "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "id": "wf-biz-sales",
+      "title": "Auto Sales Pitching",
+      "description": "An automated system to prospect potential clients on social media and send personalized outbound sales pitches at scale.",
+      "price": 79,
+      "category": "Business",
+      "features": [
+        "Scrape and analyze potential lead profiles",
+        "Send hyper-personalized outbound messages",
+        "Integrated chatbot scripts for closing sales",
+        "Auto-categorize and tag leads by interest level"
+      ],
+      "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "id": "wf-ai-001",
+      "title": "ComfyUI Product Photography",
+      "description": "A professional ComfyUI node workflow for generating hyper-realistic e-commerce product shots from simple sketches.",
+      "price": 39,
+      "category": "AI & ML",
+      "features": [
+        "ControlNet integration for precise shapes",
+        "Custom upscale nodes for 4K resolution",
+        "10+ pre-configured lighting setups",
+        "One-click background replacement"
+      ],
+      "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "id": "wf-ai-002",
+      "title": "Flowise Support Agent Pipeline",
+      "description": "Deploy an intelligent LangChain-based customer support agent using Flowise and OpenAI, ready to ingest your company's docs.",
+      "price": 89,
+      "category": "AI & ML",
+      "features": [
+        "Pinecone vector database setup",
+        "Web scraping node configuration",
+        "Fallback to human agent routing",
+        "Chat history memory management"
+      ],
+      "image": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "id": "wf-nc-001",
+      "title": "n8n Cold Email Outreach",
+      "description": "A self-hosted n8n pipeline that scrapes LinkedIn, enriches emails via Apollo, and sequences personalized outreach via Gmail.",
+      "price": 129,
+      "category": "Automation",
+      "features": [
+        "Multi-step automated follow-ups",
+        "OpenAI integration for personalizing first lines",
+        "Bounce rate monitoring",
+        "Self-hosted privacy focused"
+      ],
+      "image": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "id": "wf-nc-002",
+      "title": "Make.com Social Auto-Poster",
+      "description": "Turn Notion database entries into formatted Twitter threads, LinkedIn posts, and Instagram carousels automatically.",
+      "price": 59,
+      "category": "Automation",
+      "features": [
+        "Notion API deep integration",
+        "Image resizing using Cloudinary",
+        "Hashtag generation via GPT-4",
+        "Error handling and Slack alerts"
+      ],
+      "image": "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "id": "wf-pr-001",
+      "title": "Notion Ultimate Life OS",
+      "description": "A comprehensive Second Brain setup based on the PARA method, complete with habit trackers, finance logs, and project management.",
+      "price": 29,
+      "category": "Productivity",
+      "features": [
+        "Pre-linked relation databases",
+        "Automated weekly review templates",
+        "Subscription tracker",
+        "Mobile-optimized views"
+      ],
+      "image": "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "id": "wf-pr-002",
+      "title": "Obsidian Zettelkasten Vault",
+      "description": "A pre-configured Obsidian vault designed for academic researchers and writers to seamlessly connect thoughts and references.",
+      "price": 19,
+      "category": "Productivity",
+      "features": [
+        "Dataview plugin queries configured",
+        "Zotero integration setup guide",
+        "Custom themes and hotkeys",
+        "Literature note templates"
+      ],
+      "image": "https://images.unsplash.com/photo-1456324504439-367cee3b3c32?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "id": "wf-dev-001",
+      "title": "Next.js SaaS Boilerplate",
+      "description": "The ultimate developer workflow: A complete Next.js 14 template with Stripe subscriptions, Supabase Auth, and Tailwind CSS.",
+      "price": 149,
+      "category": "Development",
+      "features": [
+        "Stripe webhook handlers built-in",
+        "Protected API routes",
+        "User dashboard UI components",
+        "SEO optimized layout"
+      ],
+      "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "id": "wf-ds-001",
+      "title": "Figma Token Design System",
+      "description": "A robust Figma design system using advanced variables, auto-layout, and responsive components for enterprise apps.",
+      "price": 69,
+      "category": "Design",
+      "features": [
+        "Light/Dark mode variables",
+        "300+ responsive components",
+        "Typography and spacing scales",
+        "Export to code (React/Tailwind) guide"
+      ],
+      "image": "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "id": "wf-mk-001",
+      "title": "Programmatic SEO Builder",
+      "description": "A workflow combining Webflow, Airtable, and Whalesync to instantly generate 1000+ localized SEO landing pages.",
+      "price": 89,
+      "category": "Marketing",
+      "features": [
+        "Airtable database structure",
+        "Dynamic schema markup generator",
+        "Content spinning prompts",
+        "Whalesync mapping configurations"
+      ],
+      "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80"
+    }
+  ]
+}
