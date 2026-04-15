@@ -1,1 +1,8 @@
 backend/.env
+.roo-cline/
+AppData/
+.vscode/
+backend/node_modules/
+frontend/node_modules/
+.idea/
+dist/
