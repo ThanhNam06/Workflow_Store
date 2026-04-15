@@ -489,72 +489,48 @@ startMaintenanceLoop(db)
 
 // Send email via Resend when order becomes paid
 import { createDownloadToken, getTokensForOrder } from './downloads.js'
-import { sendOrderPaidEmail as sendOrderPaidEmailFromModule } from './email.js'
-
-// Initialize resend client dynamically to handle different export shapes
-let resendClient = null
-if (RESEND_API_KEY) {
-  try {
-    const rmod = await import('resend')
-    const ResendCtor = (rmod && (rmod.default || rmod.Resend || rmod))
-    if (typeof ResendCtor === 'function') {
-      resendClient = new ResendCtor(RESEND_API_KEY)
-    } else {
-      console.warn('Resend module loaded but constructor not found; send emails disabled')
+// sendOrderPaidEmail is defined inline below; keep export shape for admin routes compatibility
+async function sendOrderPaidEmail(dbLocal, order) {
+  // This function delegates to the same logic used previously: create download tokens and send via Resend
+  // Initialize resend client dynamically to handle different export shapes
+  let resendClientLocal = null
+  if (process.env.RESEND_API_KEY) {
+    try {
+      const rmod = await import('resend')
+      const ResendCtor = (rmod && (rmod.default || rmod.Resend || rmod))
+      if (typeof ResendCtor === 'function') {
+        resendClientLocal = new ResendCtor(process.env.RESEND_API_KEY)
+      }
+    } catch (err) {
+      console.warn('Failed to import Resend module inside sendOrderPaidEmail; emails disabled', err)
     }
-  } catch (err) {
-    console.warn('Failed to import Resend module; emails disabled', err)
   }
-}
+  if (!resendClientLocal) return
 
-async function sendOrderPaidEmail(order) {
-  if (!resendClient) {
-    console.warn('Resend not configured, skipping email')
-    return
-  }
-  // gather recipient from order metadata or user (best-effort)
+  // gather recipient
   let to = order.email || (order.userId ? (() => {
-    const u = db.data.users.find(x => x.id === order.userId)
+    const u = dbLocal.data.users.find(x => x.id === order.userId)
     return u ? u.email : null
   })() : null)
-  if (!to) {
-    console.warn('No email available for order', order.id)
-    return
-  }
+  if (!to) return
 
-  // prepare download tokens for each item
-  const attachments = []
   const downloads = []
   for (const it of order.items) {
-    const wf = db.data.workflows.find(w => w.id === it.workflowId)
+    const wf = dbLocal.data.workflows.find(w => w.id === it.workflowId)
     if (!wf) continue
     const filename = path.basename(wf.file_path || `${wf.id}.zip`)
-    const token = await createDownloadToken(db, filename, order.id, 3, 24*3600)
+    const token = await createDownloadToken(dbLocal, filename, order.id, 3, 24*3600)
     const downloadUrl = `${process.env.APP_BASE_URL || `http://localhost:${PORT}`}/api/download/${token}`
     downloads.push({ title: wf.title, url: downloadUrl })
   }
 
-  const html = `
-    <html>
-      <body style="font-family: Arial, sans-serif; color: #111;">
-        <h2>Thank you for your purchase</h2>
-        <p>Order ID: ${order.id}</p>
-        <p>We've attached download links for the workflows you purchased below. Links expire in 24 hours and are limited to 3 downloads each.</p>
-        <ul>
-          ${downloads.map(d => `<li><strong>${d.title}</strong>: <a href="${d.url}">${d.url}</a></li>`).join('')}
-        </ul>
-        <hr />
-        <h3>Usage Instructions</h3>
-        <p>Each workflow comes with a README inside the archive. Unzip the download and follow the included setup instructions. If you need help, reply to this email and we'll assist.</p>
-        <p>Thanks,<br/>WorkflowStore Team</p>
-      </body>
-    </html>`
+  const html = `\n    <html>\n      <body style="font-family: Arial, sans-serif; color: #111;">\n        <h2>Thank you for your purchase</h2>\n        <p>Order ID: ${order.id}</p>\n        <p>We've attached download links for the workflows you purchased below. Links expire in 24 hours and are limited to 3 downloads each.</p>\n        <ul>\n          ${downloads.map(d => `<li><strong>${d.title}</strong>: <a href="${d.url}">${d.url}</a></li>`).join('')}\n        </ul>\n        <hr />\n        <h3>Usage Instructions</h3>\n        <p>Each workflow comes with a README inside the archive. Unzip the download and follow the included setup instructions. If you need help, reply to this email and we'll assist.</p>\n        <p>Thanks,<br/>WorkflowStore Team</p>\n      </body>\n    </html>`
 
   try {
-    await resendClient.emails.send({
+    await resendClientLocal.emails.send({
       from: 'no-reply@workflowstore.local',
       to,
-      subject: 'Your WorkflowStore purchase  downloads inside',
+      subject: 'Your WorkflowStore purchase — downloads inside',
       html
     })
     console.log('Sent purchase email to', to)
@@ -562,6 +538,11 @@ async function sendOrderPaidEmail(order) {
     console.error('Failed to send email via Resend', err)
   }
 }
+
+// keep a named export for compatibility
+export { sendOrderPaidEmail as sendOrderPaidEmailFromModule }
+
+
 
 // Static serve (optional) - serve frontend build if exists
 const frontendBuild = path.join(__dirname, '..', 'frontend', 'dist')
