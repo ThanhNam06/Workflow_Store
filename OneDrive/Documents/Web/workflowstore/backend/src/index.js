@@ -1,8 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import { Low } from 'lowdb'
-import { JSONFile } from 'lowdb/node'
+import { Low, JSONFile } from 'lowdb'
 import { nanoid } from 'nanoid'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
@@ -101,15 +100,9 @@ app.post('/api/purchase', authMiddleware, async (req, res) => {
   res.json({ success: true, order })
 })
 
-// Admin: add workflow (for seed/demo)
-app.post('/api/admin/workflows', async (req, res) => {
-  const wf = req.body
-  if (!wf || !wf.id) return res.status(400).json({ error: 'Invalid workflow' })
-  await db.read()
-  db.data.workflows.push(wf)
-  await db.write()
-  res.json({ success: true, wf })
-})
+// Admin routes (in separate module)
+import registerAdminRoutes from './admin_routes.js'
+registerAdminRoutes(app, db)
 
 // Static serve (optional) - serve frontend build if exists
 import path from 'path'
