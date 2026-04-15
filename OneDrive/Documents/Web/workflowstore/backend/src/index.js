@@ -279,6 +279,47 @@ app.post('/api/create-paypal-order', async (req, res) => {
   }
 })
 
+// Capture PayPal order (server-side capture). Frontend should call this after approval or you can rely on webhook.
+app.post('/api/capture-paypal-order', async (req, res) => {
+  if (!paypalClient) return res.status(500).json({ error: 'PayPal not configured' })
+  const { paypalOrderId } = req.body
+  if (!paypalOrderId) return res.status(400).json({ error: 'Missing paypalOrderId' })
+
+  try {
+    const captureRequest = new paypal.orders.OrdersCaptureRequest(paypalOrderId)
+    captureRequest.requestBody({})
+    const captureResponse = await paypalClient.execute(captureRequest)
+
+    // Attempt to find matching order by providerReference or by purchase_unit reference_id
+    await db.read()
+    let order = db.data.orders.find(o => o.providerReference === paypalOrderId)
+    if (!order) {
+      const ref = captureResponse.result.purchase_units?.[0]?.reference_id
+      if (ref) order = db.data.orders.find(o => o.id === ref)
+    }
+
+    if (!order) {
+      // Still create a log and return success - but warn
+      console.warn('capture-paypal-order: matching local order not found for', paypalOrderId)
+      return res.status(404).json({ error: 'Local order not found' })
+    }
+
+    order.status = 'paid'
+    order.paidAt = new Date().toISOString()
+    order.paymentProvider = 'paypal'
+    order.providerReference = paypalOrderId
+    order.paypalCapture = captureResponse.result
+    await db.write()
+
+    try { await sendOrderPaidEmailFromModule(db, order) } catch (e) { console.error('sendOrderPaidEmail failed', e) }
+    console.log('Order captured and marked paid via PayPal capture:', order.id)
+    return res.json({ success: true, orderId: order.id })
+  } catch (err) {
+    console.error('PayPal capture failed', err)
+    return res.status(500).json({ error: 'PayPal capture failed' })
+  }
+})
+
 // PayPal webhook endpoint
 app.post('/api/webhooks/paypal', async (req, res) => {
   // PayPal sends events for order captures. We'll accept a simple flow where providerReference is the PayPal order id.
