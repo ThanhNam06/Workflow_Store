@@ -1,0 +1,49 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Platform {
+  N8N
+  MAKE
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+model Workflow {
+  id              String   @id @default(uuid())
+  title           String
+  description     String   @db.Text
+  price           Float
+  platform        Platform
+  difficulty      String   // Easy, Medium, Hard
+  videoDemoUrl    String?
+  docMarkdown     String   @db.Text
+  filePath        String   // Đường dẫn file trong Storage
+  createdAt       DateTime @default(now())
+  orders          Order[]
+}
+
+model Order {
+  id              String      @id @default(uuid())
+  customerEmail   String
+  amount          Float
+  currency        String      // VND or USD
+  status          OrderStatus @default(PENDING)
+  paymentGateway  String      // SePay or PayPal
+  downloadToken   String?     @unique
+  tokenExpiresAt  DateTime?
+  workflowId      String
+  workflow        Workflow    @relation(fields: [workflowId], references: [id])
+  createdAt       DateTime    @default(now())
+}
