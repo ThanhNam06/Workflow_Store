@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Command, ArrowRight } from "lucide-react";
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../store/AuthContext";
-import { motion } from "motion/react";
+import { motion } from "@motionone/react";
 import useT from "../i18n";
 
 export function Login() {

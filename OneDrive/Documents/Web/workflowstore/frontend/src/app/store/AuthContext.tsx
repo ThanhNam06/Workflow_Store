@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { useNavigate, useLocation, Navigate } from 'react-router';
+import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 
 interface User {
   id?: string;

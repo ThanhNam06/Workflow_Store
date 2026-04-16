@@ -1,5 +1,5 @@
-import { motion } from "motion/react";
-import { Link, useParams } from "react-router";
+import { motion } from "@motionone/react";
+import { Link, useParams } from "react-router-dom";
 import { categoryInfo, getWorkflowsByCategory, WorkflowCategory, Platform } from "../data/workflowData";
 import { 
   ArrowLeft,
