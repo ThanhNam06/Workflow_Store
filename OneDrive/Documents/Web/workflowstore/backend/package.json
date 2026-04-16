@@ -7,6 +7,7 @@
     "dev": "nodemon --watch src --exec node src/index.js"
   },
   "dependencies": {
+    "@paypal/checkout-server-sdk": "^1.0.3",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
@@ -15,9 +16,9 @@
     "geoip-lite": "^1.4.10",
     "jsonwebtoken": "^9.0.0",
     "lowdb": "^3.0.0",
+    "multer": "^2.1.1",
     "nanoid": "^4.0.0",
-    "resend": "^6.11.0",
-    "@paypal/checkout-server-sdk": "^1.0.3"
+    "resend": "^6.11.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

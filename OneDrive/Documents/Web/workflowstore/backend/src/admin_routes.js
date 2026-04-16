@@ -2,6 +2,10 @@ import fs from 'fs'
 import path from 'path'
 import multer from 'multer'
 import { nanoid } from 'nanoid'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 export default function registerAdminRoutes(app, db){
   // Ensure workflows storage dir exists
@@ -22,7 +26,7 @@ export default function registerAdminRoutes(app, db){
   // Admin authentication middleware using ADMIN_API_KEY from environment
   const adminAuth = (req, res, next) => {
     const key = req.headers['x-admin-key'] || req.query.admin_key || (req.headers['authorization'] && req.headers['authorization'].startsWith('Bearer ') && req.headers['authorization'].split(' ')[1])
-    const ADMIN_API_KEY = process.env.ADMIN_API_KEY
+    const ADMIN_API_KEY = process.env.ADMIN_API_KEY || ''
     if (!ADMIN_API_KEY) return res.status(500).json({ error: 'Admin key not configured' })
     if (!key || key !== ADMIN_API_KEY) return res.status(401).json({ error: 'Unauthorized' })
     next()

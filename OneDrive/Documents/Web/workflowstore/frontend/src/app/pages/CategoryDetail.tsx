@@ -42,12 +42,16 @@ export function CategoryDetail() {
   
   const categoryData = categoryInfo[category as WorkflowCategory];
   const [workflows, setWorkflows] = React.useState<any[]>([]);
+  const [isEmpty, setIsEmpty] = React.useState<boolean | null>(null);
 
   React.useEffect(() => {
     let mounted = true;
     (async () => {
       const list = await fetchWorkflowsByCategory(platform as Platform, category as WorkflowCategory);
-      if (mounted) setWorkflows(list);
+      if (mounted) {
+        setWorkflows(list);
+        setIsEmpty(Array.isArray(list) && list.length === 0);
+      }
     })();
     return () => { mounted = false };
   }, [platform, category]);
@@ -61,6 +65,14 @@ export function CategoryDetail() {
             Return to home
           </Link>
         </div>
+      </div>
+    );
+  }
+
+  if (isEmpty) {
+    return (
+      <div className="min-h-screen bg-zinc-950 pt-24 pb-20">
+        <ComingSoon message={"Premium workflows for this category are coming soon. Check back shortly."} />
       </div>
     );
   }

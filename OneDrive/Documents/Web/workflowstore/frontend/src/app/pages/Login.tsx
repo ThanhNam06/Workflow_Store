@@ -3,6 +3,7 @@ import { Command, ArrowRight } from "lucide-react";
 import { useNavigate, useLocation } from "react-router";
 import { useAuth } from "../store/AuthContext";
 import { motion } from "motion/react";
+import useT from "../i18n";
 
 export function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -10,6 +11,7 @@ export function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuth();
+  const t = useT();
   
   const from = (location.state as any)?.from || '/';
 
@@ -24,15 +26,6 @@ export function Login() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-    setIsLoading(true);
-    // Simulate Google OAuth
-    setTimeout(() => {
-      login("user@gmail.com", "Demo User");
-      setIsLoading(false);
-      navigate(from);
-    }, 1500);
   };
 
   const handleEmailLogin = async () => {
@@ -95,7 +88,7 @@ export function Login() {
           Welcome to <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">WorkflowStore</span>
         </h2>
         <p className="mt-3 text-center text-base text-zinc-400">
-          Sign in to access premium automation workflows
+          {t('login.signin')}
         </p>
       </motion.div>
 

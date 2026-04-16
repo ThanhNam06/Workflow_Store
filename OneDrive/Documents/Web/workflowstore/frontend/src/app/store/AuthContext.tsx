@@ -63,3 +63,13 @@ export function useAuth() {
   }
   return context;
 }
+
+// RequireAuth helper component used by routes
+export function RequireAuth({ children }: { children: any }) {
+  const { isAuthenticated } = useAuth();
+  if (!isAuthenticated) {
+    // Using react-router navigate through redirect intent handled at route level
+    return <div>Please login to continue.</div>;
+  }
+  return children;
+}
